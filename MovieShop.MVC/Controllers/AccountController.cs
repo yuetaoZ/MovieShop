@@ -9,12 +9,24 @@ namespace MovieShop.MVC.Controllers
     public class AccountController : Controller
     {
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateAccount()
         {
             return View();
         }
 
         [HttpGet]
+        public IActionResult GetAccountInfo()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public IActionResult Login()
         {
             return View();
