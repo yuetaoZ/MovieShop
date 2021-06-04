@@ -1,3 +1,5 @@
+using ApplicationCore.ServiceInterfaces;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +26,13 @@ namespace MovieShop.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            // Telling our Container what class it needs to inject in the constructor for interface
+            // Here is the only part we need to change!!!! (Dependency Injection!!!)
+            // Registration of sevices for interfaces
+            // Autofac IOC... (for using more than 1 services)
+            // services.addacoprd< if controllername has("Home") then use MovieService test, if controllernamehas("Move") use >
+            services.AddScoped<IMovieService, MovieService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

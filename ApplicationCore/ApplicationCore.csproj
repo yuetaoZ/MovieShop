@@ -7,9 +7,7 @@
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Models\Response\" />
     <Folder Include="Models\Request\" />
-    <Folder Include="ServiceInterfaces\" />
     <Folder Include="RepositoryInterfaces\" />
   </ItemGroup>
 
