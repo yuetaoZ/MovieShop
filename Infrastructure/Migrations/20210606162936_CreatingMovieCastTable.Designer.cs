@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MovieShopDbContext))]
-    partial class MovieShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210606162936_CreatingMovieCastTable")]
+    partial class CreatingMovieCastTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +112,8 @@ namespace Infrastructure.Migrations
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("ImdbUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2084)
+                        .HasColumnType("nvarchar(2084)");
 
                     b.Property<string>("OriginalLanguage")
                         .HasMaxLength(64)
@@ -173,8 +176,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("MovieId", "CastId", "Character");
-
-                    b.HasIndex("CastId");
 
                     b.ToTable("MovieCast");
                 });
@@ -242,69 +243,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Trailer");
                 });
 
-            modelBuilder.Entity("ApplicationCore.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AccessFailedCount")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(7)
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("HashedPassword")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.Property<bool>("IsLocked")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastLoginDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(7)
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("LockoutEndDate")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(7)
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<string>("Salt")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
-                });
-
             modelBuilder.Entity("CrewMovieCrew", b =>
                 {
                     b.Property<int>("CrewsId")
@@ -321,25 +259,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("MovieCrewDepartment", "MovieCrewJob");
 
                     b.ToTable("CrewMovieCrew");
-                });
-
-            modelBuilder.Entity("ApplicationCore.Entities.MovieCast", b =>
-                {
-                    b.HasOne("ApplicationCore.Entities.Cast", "Cast")
-                        .WithMany("MovieCasts")
-                        .HasForeignKey("CastId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationCore.Entities.Movie", "Movie")
-                        .WithMany("MovieCasts")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cast");
-
-                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.MovieCrew", b =>
@@ -398,11 +317,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ApplicationCore.Entities.Cast", b =>
-                {
-                    b.Navigation("MovieCasts");
-                });
-
             modelBuilder.Entity("ApplicationCore.Entities.Genre", b =>
                 {
                     b.Navigation("MovieGenres");
@@ -410,8 +324,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("ApplicationCore.Entities.Movie", b =>
                 {
-                    b.Navigation("MovieCasts");
-
                     b.Navigation("MovieCrews");
 
                     b.Navigation("MovieGenres");
