@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.Data;
 
 namespace MovieShop.MVC
 {
@@ -33,6 +35,11 @@ namespace MovieShop.MVC
             // Autofac IOC... (for using more than 1 services)
             // services.addacoprd< if controllername has("Home") then use MovieService test, if controllernamehas("Move") use >
             services.AddScoped<IMovieService, MovieService>();
+            services.AddDbContext<MovieShopDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString(name: "MovieShopDbConnection"));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
