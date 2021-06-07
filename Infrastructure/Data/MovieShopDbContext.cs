@@ -88,13 +88,13 @@ namespace Infrastructure.Data
             builder.HasKey(u => u.Id);
             builder.Property(u => u.FirstName).HasMaxLength(128);
             builder.Property(u => u.LastName).HasMaxLength(128);
-            builder.Property(u => u.DateOfBirth).HasColumnType("datetime2").HasMaxLength(7).HasDefaultValueSql("getdate()");
+            builder.Property(u => u.DateOfBirth).HasColumnType("datetime2(7)");
             builder.Property(u => u.Email).HasMaxLength(256);
             builder.Property(u => u.HashedPassword).HasMaxLength(1024);
             builder.Property(u => u.Salt).HasMaxLength(1024);
             builder.Property(u => u.PhoneNumber).HasMaxLength(16);
-            builder.Property(u => u.LockoutEndDate).HasColumnType("datetime2").HasMaxLength(7).HasDefaultValueSql("getdate()");
-            builder.Property(u => u.LastLoginDateTime).HasColumnType("datetime2").HasMaxLength(7).HasDefaultValueSql("getdate()");
+            builder.Property(u => u.LockoutEndDate).HasColumnType("datetime2(7)");
+            builder.Property(u => u.LastLoginDateTime).HasColumnType("datetime2(7)");
         }
 
         private void ConfigureMovieCast(EntityTypeBuilder<MovieCast> builder)
