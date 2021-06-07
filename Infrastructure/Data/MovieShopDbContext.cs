@@ -25,6 +25,11 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Cast>(ConfigureCast);
             modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
             modelBuilder.Entity<User>(ConfigureUser);
+            modelBuilder.Entity<Review>(ConfigureReview);
+            modelBuilder.Entity<Purchase>(ConfigurePurchase);
+            modelBuilder.Entity<Role>(ConfigureRole);
+            modelBuilder.Entity<UserRole>(ConfigureUserRole);
+            modelBuilder.Entity<Favorite>(ConfigureFavorite);
         }
 
         public DbSet<Genre> Genres { get; set; } // DbSet represent a Table 
@@ -36,6 +41,46 @@ namespace Infrastructure.Data
         public DbSet<Cast> Casts { get; set; }
         public DbSet<MovieCast> MovieCasts { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+
+        private void ConfigureFavorite(EntityTypeBuilder<Favorite> builder)
+        {
+            builder.ToTable("Favorite");
+            builder.HasKey(f => f.Id);
+        }
+
+        private void ConfigureUserRole(EntityTypeBuilder<UserRole> builder)
+        {
+            builder.ToTable("UserRole");
+            builder.HasKey(u => new { u.UserId, u.RoleId });
+        }
+
+        private void ConfigureRole(EntityTypeBuilder<Role> builder)
+        {
+            builder.ToTable("Role");
+            builder.HasKey(r => r.Id);
+            builder.Property(r => r.Name).HasMaxLength(20);
+        }
+
+        private void ConfigurePurchase(EntityTypeBuilder<Purchase> builder)
+        {
+            builder.ToTable("Purchase");
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.PurchaseNumber).HasColumnType("UniqueIdentifier");
+            builder.Property(p => p.TotalPrice).HasColumnType("decimal(18, 2)");
+            builder.Property(p => p.PurchaseDateTime).HasColumnType("datetime2(7)");
+        }
+
+        private void ConfigureReview(EntityTypeBuilder<Review> builder)
+        {
+            builder.ToTable("Review");
+            builder.HasKey(r => new { r.MovieId, r.UserId });
+            builder.Property(r => r.Rating).HasColumnType("decimal(3, 2)");
+        }
 
         private void ConfigureUser(EntityTypeBuilder<User> builder)
         {
