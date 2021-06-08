@@ -21,7 +21,17 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<T> AddAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual void Delete(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(T entity)
         {
             throw new NotImplementedException();
         }
@@ -32,14 +42,30 @@ namespace Infrastructure.Repositories
             return entity;
         }
 
+        public virtual async Task<T> GetByIdAsync(int id)
+        {
+            var entity = _dbContext.Set<T>().FindAsync(id);
+            return await entity;
+        }
+
         public virtual int GetCount(Expression<Func<T, bool>> filter)
         {
             return _dbContext.Set<T>().Where(filter).Count();
         }
 
+        public Task<int> GetCountAsync(Expression<Func<T, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual bool GetExists(Expression<Func<T, bool>> filter)
         {
             return _dbContext.Set<T>().Where(filter).Any();
+        }
+
+        public Task<bool> GetExistsAsync(Expression<Func<T, bool>> filter)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual IEnumerable<T> List(Expression<Func<T, bool>> filter)
@@ -52,7 +78,22 @@ namespace Infrastructure.Repositories
             return _dbContext.Set<T>().ToList();
         }
 
+        public Task<IEnumerable<T>> ListAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<T>> ListAsync(Expression<Func<T, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual T Update(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> UpdateAsync(T entity)
         {
             throw new NotImplementedException();
         }
