@@ -15,14 +15,14 @@ namespace MovieShop.MVC.Controllers
             _movieService = service;
         }
         [HttpGet]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var movie = _movieService.GetMovieDetailsById(id);
+            var movie = await _movieService.GetMovieDetailsById(id);
             return View(movie);
         }
 
         [HttpGet]
-        public IActionResult TopRatedMovies()
+        public async Task<IActionResult> TopRatedMovies()
         {
             return View();
         }

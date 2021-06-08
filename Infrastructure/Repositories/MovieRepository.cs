@@ -16,18 +16,17 @@ namespace Infrastructure.Repositories
         {
 
         }
-        public IEnumerable<Movie> GetHighestRevenueMovies()
-        {
-            var movies = _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(30).ToList();
-            return movies;
-        }
-
-        public IEnumerable<Movie> GetTopRatedMovies()
+        public async Task<IEnumerable<Movie>> GetTopRatedMovies()
         {
             throw new NotImplementedException();
         }
 
-        public override async Task<Movie> GetByIdAsync(int id)
+        public async Task<IEnumerable<Movie>> GetHighestRevenueMovies()
+        {
+            var movies = await _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(30).ToListAsync();
+            return movies;
+        }
+        public override async Task<Movie> GetById(int id)
         {
             // get movie info from Movie Table
             // get genres by joining moviegenre, genre

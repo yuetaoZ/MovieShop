@@ -18,9 +18,9 @@ namespace Infrastructure.Services
         {
             _movieRepository = movieRepository;
         }
-        public List<MovieCardResponseModel> GetTopRevenueMovies()
+        public async Task<List<MovieCardResponseModel>> GetTopRevenueMovies()
         {
-            var movies = _movieRepository.GetHighestRevenueMovies();
+            var movies = await _movieRepository.GetHighestRevenueMovies();
 
             var movieCardList = new List<MovieCardResponseModel>();
             foreach (var movie in movies)
@@ -36,9 +36,9 @@ namespace Infrastructure.Services
 
             return movieCardList;
         }
-        public MovieDetailsResponseModel GetMovieDetailsById(int id)
+        public async Task<MovieDetailsResponseModel> GetMovieDetailsById(int id)
         {
-            var movie = _movieRepository.GetById(id);
+            var movie = await _movieRepository.GetById(id);
 
             var movieDetails = new MovieDetailsResponseModel
             {

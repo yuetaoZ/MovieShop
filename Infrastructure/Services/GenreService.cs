@@ -7,18 +7,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Services
-{
-    public class GenreService : IGenreService
+ public class GenreService : IGenreService
     {
         private readonly IGenreRepository _genreRepository;
+
         public GenreService(IGenreRepository genreRepository)
         {
             _genreRepository = genreRepository;
         }
-        public List<GenreResponseModel> GetAllGenres()
+
+        public async Task<List<GenreResponseModel>> GetAllGenres()
         {
-            throw new NotImplementedException();
+            var genres = await _genreRepository.ListAll();
+
+            var genresModel = new List<GenreResponseModel>();
+            foreach (var genre in genres)
+            {
+                genresModel.Add(new GenreResponseModel
+                {
+                    Id = genre.Id, Name = genre.Name
+                });
+            }
+
+            return genresModel;
         }
     }
-}
