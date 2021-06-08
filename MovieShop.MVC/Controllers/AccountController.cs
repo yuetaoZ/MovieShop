@@ -27,5 +27,22 @@ namespace MovieShop.MVC.Controllers
             // take name, dob, email... and save it to database.
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(LoginRequestModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // login
+            }
+
+            return View();
+        }
     }
 }
