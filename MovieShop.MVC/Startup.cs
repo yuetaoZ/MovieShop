@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
+using ApplicationCore.RepositoryInterfaces;
+using Infrastructure.Repositories;
 
 namespace MovieShop.MVC
 {
@@ -29,12 +31,16 @@ namespace MovieShop.MVC
         {
             services.AddControllersWithViews();
 
-            // Telling our Container what class it needs to inject in the constructor for interface
+            // Telling our Container what class it needs to inject in the constructor for interface(we use
+            // IMovieService in HomeController's constructor, so we need a class for the IMovieService instance,
+            // here we specify which class we gonna using for an IMovieService instance.)
             // Here is the only part we need to change!!!! (Dependency Injection!!!)
-            // Registration of sevices for interfaces
-            // Autofac IOC... (for using more than 1 services)
-            // services.addacoprd< if controllername has("Home") then use MovieService test, if controllernamehas("Move") use >
             services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<IMovieRepository, MovieRepository>();
+
+            services.AddScoped<IGenreService, GenreService>();
+            services.AddScoped<IGenreRepository, GenreRepository>();
+
             services.AddDbContext<MovieShopDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString(name: "MovieShopDbConnection"));

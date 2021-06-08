@@ -4,24 +4,15 @@
     ViewData["Title"] = "Home Page";
 }
 
-
-<h2>
-    @ViewBag.PageTitle
-</h2>
-
-<h3>
-    Total Movies: @ViewBag.MoviesCount
-</h3>
-
-<h3>
-    @ViewData["MyCustomData"]
-</h3>
-
-//Razor views. combination of C# and HTML
-
-@foreach(var movie in Model)
-{
-    <div>
-        @movie.Title
+<div class="rounded">
+    <div class="container-fluid bg-light">
+        <div class="row">
+            @foreach (var movie in Model)
+            {
+                <div class="col-6 col-lg-3 col-sm-4 col-xl-2">
+                    <partial name="_MovieCard" model="movie"/>
+                </div>
+            }
+        </div>
     </div>
-}
+</div>
