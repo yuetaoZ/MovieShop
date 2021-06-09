@@ -19,13 +19,13 @@ namespace Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public virtual async  Task<T> GetById(int id)
+        public virtual async Task<T> GetById(int id)
         {
             var entity = await _dbContext.Set<T>().FindAsync(id);
             return entity;
         }
 
-        public virtual async Task<IEnumerable<T>>  ListAll()
+        public virtual async Task<IEnumerable<T>> ListAll()
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
@@ -47,9 +47,10 @@ namespace Infrastructure.Repositories
 
         public virtual async Task<T> Add(T entity)
         {
-            throw new NotImplementedException();
+            await _dbContext.Set<T>().AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
         }
-
         public virtual async Task<T> Update(T entity)
         {
             throw new NotImplementedException();

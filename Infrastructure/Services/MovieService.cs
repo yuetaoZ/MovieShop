@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ApplicationCore.Models.Response;
+﻿using ApplicationCore.Models.Response;
 using ApplicationCore.RepositoryInterfaces;
 using ApplicationCore.ServiceInterfaces;
-using Infrastructure.Repositories;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
@@ -55,10 +51,21 @@ namespace Infrastructure.Services
                 TmdbUrl = movie.TmdbUrl,
                 RunTime = movie.RunTime,
                 Price = movie.Price,
-                ReleaseDate = movie.ReleaseDate.GetValueOrDefault(),
-                Genres = movie.Genres,
-                Casts = movie.Casts
-            };
+                ReleaseDate = movie.ReleaseDate.GetValueOrDefault()
+               };
+
+            movieDetails.Genres = new List<GenreResponseModel>();
+            movieDetails.Casts = new List<CastResponseModel>();
+
+            foreach (var cast in movie.MovieCasts)
+            {
+                movieDetails.Casts.Add(new CastResponseModel { Id = cast.CastId, Name = cast.Cast.Name, ProfilePath = cast.Cast.ProfilePath, Character = cast.Character  });
+            }
+
+            foreach (var genre in movie.MovieGenres)
+            {
+                movieDetails.Genres.Add(new GenreResponseModel { Id = genre.Genre.Id, Name = genre.Genre.Name });
+            }
 
             return movieDetails;
         }

@@ -23,8 +23,8 @@ namespace ApplicationCore.Models.Response
         public int? RunTime { get; set; }
         public decimal? Price { get; set; }
         public DateTime ReleaseDate { get; set; }
-        public ICollection<Genre> Genres { get; set; }
-        public ICollection<Cast> Casts { get; set; }
+        public List<GenreResponseModel> Genres { get; set; }
+        public List<CastResponseModel> Casts { get; set; }
 
     }
 }

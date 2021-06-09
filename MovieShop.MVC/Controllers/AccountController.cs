@@ -1,4 +1,6 @@
 ﻿using ApplicationCore.Models.Request;
+using ApplicationCore.ServiceInterfaces;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,11 @@ namespace MovieShop.MVC.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IUserService _userService;
+        public AccountController(IUserService userService)
+        {
+            _userService = userService;
+        }
        [HttpGet]
         public IActionResult Register()
         {
@@ -16,35 +23,25 @@ namespace MovieShop.MVC.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Register(UserRegisterRequestModel model)
+       [HttpPost]
+        public async Task<IActionResult> Register(UserRegisterRequestModel model)
         {
-            // check for model validation on server also
             if (ModelState.IsValid)
             {
-                // save to database
+                //save to database
+                var user = await _userService.RegisterUser(model);
+                // redirect to Login 
             }
-            // take name, dob, email... and save it to database.
+            // take name, dob, email, pasword from view and save it to database
             return View();
-        }
-
+        } 
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Login(LoginRequestModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                // login
-            }
-
-            return View();
-        }
-
+       
         [HttpGet]
         public IActionResult CreateMovie()
         {
@@ -57,6 +54,19 @@ namespace MovieShop.MVC.Controllers
             if (ModelState.IsValid)
             {
                 // login
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(UserLoginRequestModel model)
+        {
+            var user = await _userService.Login(model.Email, model.Password);
+
+            if(user == null)
+            {
+                return View();
             }
 
             return View();
