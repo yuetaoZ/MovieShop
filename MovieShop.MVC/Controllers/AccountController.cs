@@ -44,5 +44,22 @@ namespace MovieShop.MVC.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult CreateMovie()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateMovie(MovieCreateRequest model)
+        {
+            if (ModelState.IsValid)
+            {
+                // login
+            }
+
+            return View();
+        }
     }
 }
