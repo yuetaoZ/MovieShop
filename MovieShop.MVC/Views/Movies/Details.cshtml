@@ -1,5 +1,59 @@
 ﻿@model ApplicationCore.Models.Response.MovieDetailsResponseModel;
 
-<div class="card">
-    <img src="@Model.BackdropUrl" class="bg-transparent" alt="@Model.Title" />
+<div class="card bg-dark text-white">
+    <img src="@Model.BackdropUrl" class="card-img" style="background-color: midnightblue; opacity: .4; height:50%" alt="@Model.Title" />
+    <div class="card-img-overlay">
+        <div class="row">
+            <div class="col-md-3 offset-2">
+                <div>
+                    <img src="@Model.PosterUrl" class="card-img-top" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <h1 class="text-white">
+                            @Model.Title
+                        </h1>
+                        <small class="text-muted"> @Model.Tagline </small>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-4 text-secondary font-weight-bold mt-2">
+                        @Model.RunTime
+                    </div>
+                    <div class="col-8">
+                        Genres
+                        @*@foreach (var genre in Model.Genres)
+                        {
+                        <a class="badge badge-pill badge-dark ml-1" asp-action="Genre" asp-route-id="@genre.Id">
+                            @genre.Name
+                        </a>
+                        }*@
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4 mt-3">
+                        <h4>
+                            <span class="badge badge-warning">
+                                @Model.Rating?.ToString("0.00")
+                            </span>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-light mt-2">
+                        @Model.Overview
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
 </div>
