@@ -1,4 +1,4 @@
-﻿@model ApplicationCore.Models.Response.MovieDetailsResponseModel;
+﻿@model ApplicationCore.Models.Response.MovieDetailsResponseModel
 
 <div class="card bg-dark text-white">
     <img src="@Model.BackdropUrl" class="card-img" style="background-color: midnightblue; opacity: .4; height:50%" alt="@Model.Title" />
@@ -25,13 +25,12 @@
                         @Model.RunTime
                     </div>
                     <div class="col-8">
-                        Genres
-                        @*@foreach (var genre in Model.Genres)
+                        @foreach (var genre in Model.Genres)
                         {
-                        <a class="badge badge-pill badge-dark ml-1" asp-action="Genre" asp-route-id="@genre.Id">
-                            @genre.Name
-                        </a>
-                        }*@
+                            <a class="badge badge-pill badge-dark ml-1" asp-action="Genre" asp-route-id="@genre.Id">
+                                @genre.Name
+                            </a>
+                        }
                     </div>
                 </div>
 
@@ -56,4 +55,8 @@
 
 
     </div>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
 </div>

@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MovieShopDbContext))]
-    partial class MovieShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210609170542_updateMovieTable")]
+    partial class updateMovieTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,11 +112,16 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("MovieId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Genre");
                 });
@@ -429,36 +436,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("CrewMovieCrew");
                 });
 
-            modelBuilder.Entity("MovieGenres", b =>
-                {
-                    b.Property<int>("GenreId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GenreId", "MovieId");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("MovieGenres");
-                });
-
-            modelBuilder.Entity("UserRoles", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RoleId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserRoles");
-                });
-
             modelBuilder.Entity("ApplicationCore.Entities.Cast", b =>
                 {
                     b.HasOne("ApplicationCore.Entities.Movie", null)
@@ -490,6 +467,13 @@ namespace Infrastructure.Migrations
                     b.Navigation("Movie");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Genre", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.Movie", null)
+                        .WithMany("Genres")
+                        .HasForeignKey("MovieId");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.MovieCast", b =>
@@ -525,7 +509,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("ApplicationCore.Entities.MovieGenre", b =>
                 {
                     b.HasOne("ApplicationCore.Entities.Genre", "Genre")
-                        .WithMany()
+                        .WithMany("MovieGenres")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -593,13 +577,13 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("ApplicationCore.Entities.UserRole", b =>
                 {
                     b.HasOne("ApplicationCore.Entities.Role", "Role")
-                        .WithMany()
+                        .WithMany("userRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ApplicationCore.Entities.User", "User")
-                        .WithMany("UserRoles")
+                        .WithMany("userRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -624,39 +608,14 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MovieGenres", b =>
-                {
-                    b.HasOne("ApplicationCore.Entities.Genre", null)
-                        .WithMany()
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationCore.Entities.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UserRoles", b =>
-                {
-                    b.HasOne("ApplicationCore.Entities.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationCore.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ApplicationCore.Entities.Cast", b =>
                 {
                     b.Navigation("MovieCasts");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Genre", b =>
+                {
+                    b.Navigation("MovieGenres");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.Movie", b =>
@@ -666,6 +625,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("Crews");
 
                     b.Navigation("Favorites");
+
+                    b.Navigation("Genres");
 
                     b.Navigation("MovieCasts");
 
@@ -680,6 +641,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Trailers");
                 });
 
+            modelBuilder.Entity("ApplicationCore.Entities.Role", b =>
+                {
+                    b.Navigation("userRoles");
+                });
+
             modelBuilder.Entity("ApplicationCore.Entities.User", b =>
                 {
                     b.Navigation("Favorites");
@@ -688,7 +654,7 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("Reviews");
 
-                    b.Navigation("UserRoles");
+                    b.Navigation("userRoles");
                 });
 #pragma warning restore 612, 618
         }

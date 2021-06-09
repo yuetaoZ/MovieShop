@@ -19,17 +19,27 @@ namespace Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Trailer>(ConfigureTrailer);
-            modelBuilder.Entity<Movie>(ConfigureMovie);
             modelBuilder.Entity<MovieCrew>(ConfigureMovieCrew);
             modelBuilder.Entity<MovieGenre>(ConfigureMovieGenre);
             modelBuilder.Entity<Cast>(ConfigureCast);
             modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
-            modelBuilder.Entity<User>(ConfigureUser);
             modelBuilder.Entity<Review>(ConfigureReview);
             modelBuilder.Entity<Purchase>(ConfigurePurchase);
             modelBuilder.Entity<Role>(ConfigureRole);
             modelBuilder.Entity<UserRole>(ConfigureUserRole);
             modelBuilder.Entity<Favorite>(ConfigureFavorite);
+
+            modelBuilder.Entity<Movie>(ConfigureMovie);
+            modelBuilder.Entity<Movie>().HasMany(m => m.Genres).WithMany(g => g.Movies)
+                .UsingEntity<Dictionary<string, object>>("MovieGenres",
+                m => m.HasOne<Genre>().WithMany().HasForeignKey("GenreId"),
+                g => g.HasOne<Movie>().WithMany().HasForeignKey("MovieId"));
+            
+            modelBuilder.Entity<User>(ConfigureUser);
+            modelBuilder.Entity<User>().HasMany(u => u.Roles).WithMany(r => r.Users)
+                .UsingEntity<Dictionary<string, object>>("UserRoles",
+                u => u.HasOne<Role>().WithMany().HasForeignKey("RoleId"),
+                r => r.HasOne<User>().WithMany().HasForeignKey("UserId"));
         }
 
         public DbSet<Genre> Genres { get; set; } // DbSet represent a Table 

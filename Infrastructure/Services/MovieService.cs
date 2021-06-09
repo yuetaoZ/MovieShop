@@ -55,7 +55,9 @@ namespace Infrastructure.Services
                 TmdbUrl = movie.TmdbUrl,
                 RunTime = movie.RunTime,
                 Price = movie.Price,
-                ReleaseDate = movie.ReleaseDate.GetValueOrDefault()
+                ReleaseDate = movie.ReleaseDate.GetValueOrDefault(),
+                Genres = movie.Genres,
+                Casts = movie.Casts
             };
 
             return movieDetails;
