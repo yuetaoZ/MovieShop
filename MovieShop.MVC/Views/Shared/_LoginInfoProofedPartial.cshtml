@@ -1,15 +1,15 @@
 ﻿@using ApplicationCore.ServiceInterfaces;
 
-@inject ICurrentUserService _CurrentUserService;
+@inject ICurrentUserService CurrentUserService;
 
 
-@if (_CurrentUserService.IsAuthenticated)
+@if (CurrentUserService.IsAuthenticated)
 {
     // FirstName LastName and Email..
     <li class="nav-item">
         <div class="dropdown">
             <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                User FullName
+                @CurrentUserService.FullName
             </a>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">

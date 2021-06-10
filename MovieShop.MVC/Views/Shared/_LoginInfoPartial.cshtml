@@ -1,9 +1,9 @@
 ﻿@using ApplicationCore.ServiceInterfaces;
 
-@inject ICurrentUserService _CurrentUserService;
+@inject ICurrentUserService CurrentUserService;
 
 
-@if (_CurrentUserService.IsAuthenticated)
+@if (CurrentUserService.IsAuthenticated)
 {
     // FirstName LastName and Email..
 }
