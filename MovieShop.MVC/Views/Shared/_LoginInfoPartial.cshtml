@@ -5,19 +5,19 @@
 
 @if (_CurrentUserService.IsAuthenticated)
 {
-    // FirstName LastName and Email
+    // FirstName LastName and Email..
 }
 else
 {
-<div class="navbar-collapse collapse w-100 order-3">
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item pr-4">
-            <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Login">Login</a>
-        </li>
-        <li class="nav-item">
-            <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Register">Register</a>
-        </li>
-    </ul>
+    <div class="navbar-collapse collapse w-100 order-3">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item pr-4">
+                <a class="btn btn-outline-light text-light" asp-controller="Account" asp-action="Login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-light text-light" asp-controller="Account" asp-action="Register">Register</a>
+            </li>
+        </ul>
 
-</div>
+    </div>
 }
