@@ -52,19 +52,19 @@ namespace Infrastructure.Services
                 RunTime = movie.RunTime,
                 Price = movie.Price,
                 ReleaseDate = movie.ReleaseDate.GetValueOrDefault()
-               };
+            };
 
             movieDetails.Genres = new List<GenreResponseModel>();
             movieDetails.Casts = new List<CastResponseModel>();
 
-            foreach (var cast in movie.MovieCasts)
+            foreach (var moviecast in movie.MovieCasts)
             {
-                movieDetails.Casts.Add(new CastResponseModel { Id = cast.CastId, Name = cast.Cast.Name, ProfilePath = cast.Cast.ProfilePath, Character = cast.Character  });
+                movieDetails.Casts.Add(new CastResponseModel { Id = moviecast.CastId, Name = moviecast.Cast.Name, ProfilePath = moviecast.Cast.ProfilePath, Character = moviecast.Character });
             }
 
-            foreach (var genre in movie.MovieGenres)
+            foreach (var moviegenre in movie.MovieGenres)
             {
-                movieDetails.Genres.Add(new GenreResponseModel { Id = genre.Genre.Id, Name = genre.Genre.Name });
+                movieDetails.Genres.Add(new GenreResponseModel { Id = moviegenre.Genre.Id, Name = moviegenre.Genre.Name });
             }
 
             return movieDetails;

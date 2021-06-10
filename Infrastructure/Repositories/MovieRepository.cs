@@ -28,18 +28,14 @@ namespace Infrastructure.Repositories
         }
         public override async Task<Movie> GetById(int id)
         {
-            // get movie info from Movie Table
-            // get genres by joining moviegenre, genre
-            // movie, moviecast and cast
-            // rating, Avg of movieid Review Table
             var movie = await _dbContext.Movies.Include(m => m.MovieGenres).ThenInclude(m => m.Genre).
-                Include(m => m.MovieCasts).ThenInclude(m => m.Cast).
-                FirstOrDefaultAsync(m => m.Id == id);
+            Include(m => m.MovieCasts).ThenInclude(m => m.Cast).
+            FirstOrDefaultAsync(m => m.Id == id);
 
             var movieRating = await _dbContext.Reviews.Where(r => r.MovieId == id).DefaultIfEmpty().AverageAsync(r => r == null ? 0 : r.Rating);
             if (movieRating > 0) movie.Rating = movieRating;
 
-            return movie; 
+            return movie;
         }
     }
 }

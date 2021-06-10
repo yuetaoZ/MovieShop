@@ -14,11 +14,12 @@ namespace MovieShop.MVC.Controllers
         {
             _movieService = service;
         }
+
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var MovieDetails = await _movieService.GetMovieDetailsById(id);
-            return View("Details", MovieDetails);
+            return View(MovieDetails);
         }
 
         [HttpGet]

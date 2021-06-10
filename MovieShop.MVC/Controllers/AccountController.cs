@@ -19,7 +19,7 @@ namespace MovieShop.MVC.Controllers
        [HttpGet]
         public IActionResult Register()
         {
-            //.. show a vie with empty text boxes for name, dob, email, password
+            // show a view with empty text boxes for name, dob, email, password
             return View();
         }
 
@@ -53,7 +53,7 @@ namespace MovieShop.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                // login
+                // create movie 
             }
 
             return View();

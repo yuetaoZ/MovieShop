@@ -112,6 +112,8 @@ namespace Infrastructure.Data
             builder.ToTable("MovieCast");
             builder.HasKey(m => new { m.MovieId, m.CastId, m.Character});
             builder.Property(m => m.Character).HasMaxLength(450);
+            builder.HasOne(mc => mc.Movie).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.MovieId);
+            builder.HasOne(mc => mc.Cast).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.CastId);
         }
 
         private void ConfigureCast(EntityTypeBuilder<Cast> builder)
