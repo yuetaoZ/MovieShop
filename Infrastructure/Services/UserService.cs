@@ -60,7 +60,6 @@ namespace Infrastructure.Services
 
             return response;
         }
-
         public async Task<UserLoginResponseModel> Login(string email, string password)
         {
             // go to database and get the user info -- row by email
@@ -99,7 +98,6 @@ namespace Infrastructure.Services
 
             return Convert.ToBase64String(randomBytes);
         }
-
         private string CreateHashedPassword(string password, string salt)
         {
             var hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -110,7 +108,5 @@ namespace Infrastructure.Services
                 256 / 8));
             return hashed;
         }
-
-        
     }
 }

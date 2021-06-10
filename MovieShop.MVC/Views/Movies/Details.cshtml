@@ -133,19 +133,19 @@
             <tbody>
 
 
-            @foreach (var cast in Model?.Casts)
-            {
-                <tr>
-                    <td>
-                        <img src="@cast.ProfilePath"
-                             class="rounded-circle"
-                             style="max-height: 40%; max-width: 40%"
-                             alt="@cast.Name"/>
-                    </td>
-                    <td> @cast.Name </td>
-                    <td> @cast.Character</td>
-                </tr>
-            }
+                @foreach (var cast in Model?.Casts)
+                {
+                    <tr>
+                        <td>
+                            <img src="@cast.ProfilePath"
+                                 class="rounded-circle"
+                                 style="max-height: 40%; max-width: 40%"
+                                 alt="@cast.Name" />
+                        </td>
+                        <td> @cast.Name </td>
+                        <td> @cast.Character</td>
+                    </tr>
+                }
 
 
             </tbody>
