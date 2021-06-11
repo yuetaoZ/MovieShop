@@ -15,6 +15,7 @@ using Infrastructure.Data;
 using ApplicationCore.RepositoryInterfaces;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MovieShop.MVC.Middlewares;
 
 namespace MovieShop.MVC
 {
@@ -68,6 +69,7 @@ namespace MovieShop.MVC
         {
             if (env.IsDevelopment())
             {
+                app.UseMovieShopExceptionMiddleware();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -83,6 +85,9 @@ namespace MovieShop.MVC
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // register my customed middleware
+            app.UseLoggerMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

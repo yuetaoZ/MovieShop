@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using ApplicationCore.Entities;
@@ -63,7 +64,7 @@ namespace Infrastructure.Services
         public async Task<UserLoginResponseModel> Login(string email, string password)
         {
             // go to database and get the user info -- row by email
-            var user  = await _userRepository.GetUserByEmail(email);
+            var user = await _userRepository.GetUserByEmail(email);
 
             if (user == null)
             {
@@ -81,12 +82,33 @@ namespace Infrastructure.Services
 
                 var loginResponseModel = new UserLoginResponseModel
                 {
-                    Id = user.Id, Email = user.Email, FirstName = user.FirstName, LastName = user.LastName
+                    Id = user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
                 };
                 return loginResponseModel;
             }
 
             return null;
+        }
+        public async Task<List<MovieCardResponseModel>> GetUserPurchasedByUserId(int id)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            var purchedMovieCardList = new List<MovieCardResponseModel>();
+            foreach (var usermovie in user.Purchases)
+            {
+                purchedMovieCardList.Add(new MovieCardResponseModel
+                {
+                    Id = usermovie.MovieId,
+                    PosterUrl = usermovie.Movie.PosterUrl,
+                    ReleaseDate = usermovie.Movie.ReleaseDate.GetValueOrDefault(),
+                    Title = usermovie.Movie.Title
+                });
+            }
+
+            return purchedMovieCardList;
         }
         private string CreateSalt()
         {

@@ -59,7 +59,11 @@ namespace Infrastructure.Services
 
             foreach (var moviecast in movie.MovieCasts)
             {
-                movieDetails.Casts.Add(new CastResponseModel { Id = moviecast.CastId, Name = moviecast.Cast.Name, ProfilePath = moviecast.Cast.ProfilePath, Character = moviecast.Character });
+                movieDetails.Casts.Add(new CastResponseModel { 
+                    Id = moviecast.CastId, 
+                    Name = moviecast.Cast.Name, 
+                    ProfilePath = moviecast.Cast.ProfilePath, 
+                    Character = moviecast.Character });
             }
 
             foreach (var moviegenre in movie.MovieGenres)
