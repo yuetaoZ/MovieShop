@@ -94,7 +94,7 @@ namespace Infrastructure.Services
         }
         public async Task<List<MovieCardResponseModel>> GetUserPurchasedMovies(int id)
         {
-            var user = await _userRepository.GetUserById(id);
+            var user = await _userRepository.GetById(id);
 
             var purchedMovieCardList = new List<MovieCardResponseModel>();
             foreach (var usermovie in user.Purchases)
@@ -134,16 +134,16 @@ namespace Infrastructure.Services
         public async Task<UserProfileResponseModel> GetUserProfile(int userId)
         {
 
-            var user = await _userRepository.GetUserById(userId);
+            var user = await _userRepository.GetById(userId);
             var userProfile = new UserProfileResponseModel
             {
-               Id = user.Id, 
-               FirstName = user.FirstName,
-               LastName = user.LastName,
-               DateOfBirth = user.DateOfBirth.GetValueOrDefault(),
-               Email = user.Email,
-               PhoneNumber = user.PhoneNumber,
-               LastLoginDateTime = user.LastLoginDateTime
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth.GetValueOrDefault(),
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                LastLoginDateTime = user.LastLoginDateTime.GetValueOrDefault(DateTime.Now)
             };
 
 
@@ -155,7 +155,7 @@ namespace Infrastructure.Services
 
         public async Task<List<MovieCardResponseModel>> GetUserFavoriteMovies(int userId)
         {
-            var user = await _userRepository.GetUserById(userId);
+            var user = await _userRepository.GetById(userId);
 
             var favoriteMovieCardList = new List<MovieCardResponseModel>();
             foreach (var usermovie in user.Favorites)
@@ -172,9 +172,36 @@ namespace Infrastructure.Services
             return favoriteMovieCardList;
         }
 
-        public Task<UserProfileResponseModel> EditUserProfile(int userId)
-        {
-            throw new NotImplementedException();
+        public async Task<UserProfileResponseModel> EditUserProfile(UserProfileResponseModel userProfileResponseModel)
+        {        
+            var user = await _userRepository.GetById(userProfileResponseModel.Id);
+
+            if (user == null)
+            {
+                // return null
+                return null;
+            }
+
+            user.Id = userProfileResponseModel.Id;
+            user.FirstName = userProfileResponseModel.FirstName;
+            user.LastName = userProfileResponseModel.LastName;
+            user.Email = userProfileResponseModel.Email;
+            user.PhoneNumber = userProfileResponseModel.PhoneNumber;
+            user.LastLoginDateTime = userProfileResponseModel.LastLoginDateTime;
+
+            await _userRepository.Update(user);
+
+            var response = new UserProfileResponseModel
+            {
+                Id = userProfileResponseModel.Id,
+                FirstName = userProfileResponseModel.FirstName,
+                LastName = userProfileResponseModel.LastName,
+                Email = userProfileResponseModel.Email,
+                PhoneNumber = userProfileResponseModel.PhoneNumber,
+                LastLoginDateTime = userProfileResponseModel.LastLoginDateTime
+            };
+
+            return response;
         }
     }
 }

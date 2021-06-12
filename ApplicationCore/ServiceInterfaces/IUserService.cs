@@ -17,7 +17,7 @@ namespace ApplicationCore.ServiceInterfaces
 
         // delete
         // EditUser
-        Task<UserProfileResponseModel> EditUserProfile(int userId);
+        Task<UserProfileResponseModel> EditUserProfile(UserProfileResponseModel userProfileResponseModel);
         // Change Password
         // Purchase Movie
         // Favorite Movie

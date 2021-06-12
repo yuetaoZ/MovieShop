@@ -23,7 +23,7 @@ namespace Infrastructure.Repositories
             return user;
         }
 
-        public async Task<User> GetUserById(int Id)
+        public override async Task<User> GetById(int Id)
         {
             var user = await _dbContext.Users
                 .Include(u => u.Purchases).ThenInclude(p => p.Movie)

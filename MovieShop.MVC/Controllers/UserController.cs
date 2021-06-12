@@ -1,4 +1,5 @@
-﻿using ApplicationCore.ServiceInterfaces;
+﻿using ApplicationCore.Models.Response;
+using ApplicationCore.ServiceInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -47,7 +48,6 @@ namespace MovieShop.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewProfile()
         {
-            // get userid => get userDetails
             var userId = _currentUserService.UserId;
             var userProfile = await _userService.GetUserProfile(userId);
 
@@ -58,11 +58,24 @@ namespace MovieShop.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> EditProfile()
         {
-            // get userid => get userDetails
             var userId = _currentUserService.UserId;
             var userProfile = await _userService.GetUserProfile(userId);
 
             return View(userProfile);
+        }
+        
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(UserProfileResponseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                //save to database
+                await _userService.EditUserProfile(model);
+                // redirect to Login 
+            }
+            // take name, dob, email, pasword from view and save it to database
+            return RedirectToAction("ViewProfile");
         }
 
     }
