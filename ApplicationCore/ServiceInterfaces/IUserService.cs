@@ -17,16 +17,19 @@ namespace ApplicationCore.ServiceInterfaces
 
         // delete
         // EditUser
+        Task<UserProfileResponseModel> EditUserProfile(int userId);
         // Change Password
         // Purchase Movie
         // Favorite Movie
         // Add Review
         // Get All Purchased Movies
-        Task<List<MovieCardResponseModel>> GetUserPurchasedByUserId(int id);
+        Task<List<MovieCardResponseModel>> GetUserPurchasedMovies(int userId);
         // Get All Favorited Movies
+        Task<List<MovieCardResponseModel>> GetUserFavoriteMovies(int userId);
         // Edit Review
         // Remove Favorite
         // Get User Details
+        Task<UserProfileResponseModel> GetUserProfile(int userId);
         // 
     }
 }

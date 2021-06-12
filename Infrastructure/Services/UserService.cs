@@ -92,7 +92,7 @@ namespace Infrastructure.Services
 
             return null;
         }
-        public async Task<List<MovieCardResponseModel>> GetUserPurchasedByUserId(int id)
+        public async Task<List<MovieCardResponseModel>> GetUserPurchasedMovies(int id)
         {
             var user = await _userRepository.GetUserById(id);
 
@@ -129,6 +129,52 @@ namespace Infrastructure.Services
                 10000,
                 256 / 8));
             return hashed;
+        }
+
+        public async Task<UserProfileResponseModel> GetUserProfile(int userId)
+        {
+
+            var user = await _userRepository.GetUserById(userId);
+            var userProfile = new UserProfileResponseModel
+            {
+               Id = user.Id, 
+               FirstName = user.FirstName,
+               LastName = user.LastName,
+               DateOfBirth = user.DateOfBirth.GetValueOrDefault(),
+               Email = user.Email,
+               PhoneNumber = user.PhoneNumber,
+               LastLoginDateTime = user.LastLoginDateTime
+            };
+
+
+            userProfile.Purchases = await GetUserPurchasedMovies(userId);
+            userProfile.Favorites = await GetUserFavoriteMovies(userId);
+
+            return userProfile;
+        }
+
+        public async Task<List<MovieCardResponseModel>> GetUserFavoriteMovies(int userId)
+        {
+            var user = await _userRepository.GetUserById(userId);
+
+            var favoriteMovieCardList = new List<MovieCardResponseModel>();
+            foreach (var usermovie in user.Favorites)
+            {
+                favoriteMovieCardList.Add(new MovieCardResponseModel
+                {
+                    Id = usermovie.MovieId,
+                    PosterUrl = usermovie.Movie.PosterUrl,
+                    ReleaseDate = usermovie.Movie.ReleaseDate.GetValueOrDefault(),
+                    Title = usermovie.Movie.Title
+                });
+            }
+
+            return favoriteMovieCardList;
+        }
+
+        public Task<UserProfileResponseModel> EditUserProfile(int userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

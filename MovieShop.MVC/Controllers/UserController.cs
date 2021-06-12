@@ -29,7 +29,7 @@ namespace MovieShop.MVC.Controllers
             //
             // make a request to the database and get info from purchase table 
             // select * from Purchase where userid = @getfromcookie
-            var purchasedMovies = await _userService.GetUserPurchasedByUserId(userId);
+            var purchasedMovies = await _userService.GetUserPurchasedMovies(userId);
             
             return View(purchasedMovies);
         }
@@ -42,6 +42,29 @@ namespace MovieShop.MVC.Controllers
             // get userid from CurrentUser and create a row in Purchase Table
             return View();
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> ViewProfile()
+        {
+            // get userid => get userDetails
+            var userId = _currentUserService.UserId;
+            var userProfile = await _userService.GetUserProfile(userId);
+
+            return View(userProfile);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
+        {
+            // get userid => get userDetails
+            var userId = _currentUserService.UserId;
+            var userProfile = await _userService.GetUserProfile(userId);
+
+            return View(userProfile);
+        }
+
     }
 }
 
