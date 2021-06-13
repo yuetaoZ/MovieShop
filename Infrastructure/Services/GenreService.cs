@@ -7,7 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
- public class GenreService : IGenreService
+namespace Infrastructure.Services
+{
+    public class GenreService : IGenreService
     {
         private readonly IGenreRepository _genreRepository;
 
@@ -25,10 +27,33 @@ using System.Threading.Tasks;
             {
                 genresModel.Add(new GenreResponseModel
                 {
-                    Id = genre.Id, Name = genre.Name
+                    Id = genre.Id,
+                    Name = genre.Name
                 });
             }
 
             return genresModel;
         }
+
+        public async Task<List<MovieCardResponseModel>> GetMoviesByGenreId(int Id)
+        {
+            var genre = await _genreRepository.GetById(Id);
+
+
+            var movieCasts = new List<MovieCardResponseModel>();
+
+            foreach (var moviecast in genre.MovieGenres)
+            {
+                movieCasts.Add(new MovieCardResponseModel
+                {
+                    Id = moviecast.Movie.Id,
+                    PosterUrl = moviecast.Movie.PosterUrl,
+                    ReleaseDate = moviecast.Movie.ReleaseDate.GetValueOrDefault(),
+                    Title = moviecast.Movie.Title
+                });
+            }
+
+            return movieCasts;
+        }
     }
+}

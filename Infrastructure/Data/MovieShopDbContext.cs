@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data
 {
-   public class MovieShopDbContext: DbContext
+    public class MovieShopDbContext : DbContext
     {
-        public MovieShopDbContext(DbContextOptions<MovieShopDbContext> options): base(options)
+        public MovieShopDbContext(DbContextOptions<MovieShopDbContext> options) : base(options)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,15 +31,21 @@ namespace Infrastructure.Data
 
             modelBuilder.Entity<Movie>(ConfigureMovie);
             modelBuilder.Entity<Movie>().HasMany(m => m.Genres).WithMany(g => g.Movies)
-                .UsingEntity<Dictionary<string, object>>("MovieGenres",
-                m => m.HasOne<Genre>().WithMany().HasForeignKey("GenreId"),
-                g => g.HasOne<Movie>().WithMany().HasForeignKey("MovieId"));
-            
+               .UsingEntity<Dictionary<string, object>>("MovieGenres",
+               m => m.HasOne<Genre>().WithMany().HasForeignKey("GenreId"),
+               g => g.HasOne<Movie>().WithMany().HasForeignKey("MovieId"));
+
             modelBuilder.Entity<User>(ConfigureUser);
             modelBuilder.Entity<User>().HasMany(u => u.Roles).WithMany(r => r.Users)
                 .UsingEntity<Dictionary<string, object>>("UserRoles",
                 u => u.HasOne<Role>().WithMany().HasForeignKey("RoleId"),
                 r => r.HasOne<User>().WithMany().HasForeignKey("UserId"));
+
+            modelBuilder.Entity<Genre>(ConfigureGenre);
+            modelBuilder.Entity<Genre>().HasMany(g => g.Movies).WithMany(m => m.Genres)
+                .UsingEntity<Dictionary<string, object>>("MovieGenres",
+                g => g.HasOne<Movie>().WithMany().HasForeignKey("MovieId"),
+                m => m.HasOne<Genre>().WithMany().HasForeignKey("GenreId"));
         }
 
         public DbSet<Genre> Genres { get; set; } // DbSet represent a Table 
@@ -47,7 +53,7 @@ namespace Infrastructure.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Crew> Crews { get; set; }
         public DbSet<MovieCrew> MovieCrews { get; set; }
-        public DbSet<MovieGenre> MovieGenres{ get; set; }
+        public DbSet<MovieGenre> MovieGenres { get; set; }
         public DbSet<Cast> Casts { get; set; }
         public DbSet<MovieCast> MovieCasts { get; set; }
         public DbSet<User> Users { get; set; }
@@ -56,6 +62,12 @@ namespace Infrastructure.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+
+        private void ConfigureGenre(EntityTypeBuilder<Genre> builder)
+        {
+            builder.ToTable("Genre");
+            builder.HasKey(g => g.Id);
+        }
 
         private void ConfigureFavorite(EntityTypeBuilder<Favorite> builder)
         {
@@ -110,7 +122,7 @@ namespace Infrastructure.Data
         private void ConfigureMovieCast(EntityTypeBuilder<MovieCast> builder)
         {
             builder.ToTable("MovieCast");
-            builder.HasKey(m => new { m.MovieId, m.CastId, m.Character});
+            builder.HasKey(m => new { m.MovieId, m.CastId, m.Character });
             builder.Property(m => m.Character).HasMaxLength(450);
             builder.HasOne(mc => mc.Movie).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.MovieId);
             builder.HasOne(mc => mc.Cast).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.CastId);

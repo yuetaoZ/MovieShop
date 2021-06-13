@@ -9,6 +9,7 @@ namespace ApplicationCore.ServiceInterfaces
 {
     public interface IGenreService
     {
-       Task<List<GenreResponseModel>> GetAllGenres();
+        Task<List<GenreResponseModel>> GetAllGenres();
+        Task<List<MovieCardResponseModel>> GetMoviesByGenreId(int genreId);
     }
 }

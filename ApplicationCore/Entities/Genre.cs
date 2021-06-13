@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Entities
 {
-    [Table("Genre")]
     public class Genre
     {
         public int Id { get; set; }
         [MaxLength(64)]
         public string Name { get; set; }
+        public ICollection<MovieGenre> MovieGenres { get; set; }
         public ICollection<Movie> Movies { get; set; }
     }
 }

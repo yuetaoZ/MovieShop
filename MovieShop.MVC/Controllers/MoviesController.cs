@@ -10,9 +10,11 @@ namespace MovieShop.MVC.Controllers
     public class MoviesController : Controller
     {
         private readonly IMovieService _movieService;
-        public MoviesController(IMovieService service)
+        private readonly IGenreService _genreService;
+        public MoviesController(IMovieService movieService, IGenreService genreService)
         {
-            _movieService = service;
+            _movieService = movieService;
+            _genreService = genreService;
         }
 
         [HttpGet]
@@ -26,6 +28,13 @@ namespace MovieShop.MVC.Controllers
         public async Task<IActionResult> TopRatedMovies()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Genre(int id)
+        {
+            var moviecards = await _genreService.GetMoviesByGenreId(id);
+            return View(moviecards);
         }
     }
 }

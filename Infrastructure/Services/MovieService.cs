@@ -68,7 +68,10 @@ namespace Infrastructure.Services
 
             foreach (var moviegenre in movie.MovieGenres)
             {
-                movieDetails.Genres.Add(new GenreResponseModel { Id = moviegenre.Genre.Id, Name = moviegenre.Genre.Name });
+                movieDetails.Genres.Add(new GenreResponseModel { 
+                    Id = moviegenre.Genre.Id, 
+                    Name = moviegenre.Genre.Name
+                });
             }
 
             return movieDetails;
