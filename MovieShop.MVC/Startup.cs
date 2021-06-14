@@ -33,10 +33,7 @@ namespace MovieShop.MVC
         {
             services.AddControllersWithViews();
 
-            // Telling our Container what class it needs to inject in the constructor for interface(we use
-            // IMovieService in HomeController's constructor, so we need a class for the IMovieService instance,
-            // here we specify which class we gonna using for an IMovieService instance.)
-            // Here is the only part we need to change!!!! (Dependency Injection!!!)
+            // Dependency injections for IServices, IRepositories and DbContext etc.
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IMovieRepository, MovieRepository>();
 

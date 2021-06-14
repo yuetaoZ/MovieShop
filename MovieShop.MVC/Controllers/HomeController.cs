@@ -15,7 +15,6 @@ namespace MovieShop.MVC.Controllers
     {
         private readonly IMovieService _movieService;
 
-        // Constructor Injection ******(Very Important!!!!)
         public HomeController(IMovieService movieService)
         {
             // _movieService should have an instance of a class that implements IMovieService
