@@ -32,9 +32,34 @@ namespace Infrastructure.Services
 
             return movieCardList;
         }
+        
+        //public async Task<List<MovieCardResponseModel>> GetTopRatedMovies()
+        //{
+        //    var movies = await _movieRepository.GetTopRatedMovies();
+
+        //    var movieCardList = new List<MovieCardResponseModel>();
+        //    foreach (var movie in movies)
+        //    {
+        //        movieCardList.Add(new MovieCardResponseModel
+        //        {
+        //            Id = movie.Id,
+        //            PosterUrl = movie.PosterUrl,
+        //            ReleaseDate = movie.ReleaseDate.GetValueOrDefault(),
+        //            Title = movie.Title
+        //        });
+        //    }
+
+        //    return movieCardList;
+        //}
+
         public async Task<MovieDetailsResponseModel> GetMovieDetailsById(int id)
         {
             var movie = await _movieRepository.GetById(id);
+
+            if (movie == null)
+            {
+                return null;
+            }
 
             var movieDetails = new MovieDetailsResponseModel
             {

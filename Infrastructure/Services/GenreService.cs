@@ -39,6 +39,10 @@ namespace Infrastructure.Services
         {
             var genre = await _genreRepository.GetById(Id);
 
+            if (genre == null)
+            {
+                return null;
+            }
 
             var movieCasts = new List<MovieCardResponseModel>();
 

@@ -13,10 +13,12 @@ namespace MovieShop.API.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly IMovieService _movieService;
+        private readonly IGenreService _genreService;
 
-        public MoviesController(IMovieService movieService)
+        public MoviesController(IMovieService movieService, IGenreService genreService)
         {
             _movieService = movieService;
+            _genreService = genreService;
         }
 
         [HttpGet]
@@ -32,6 +34,33 @@ namespace MovieShop.API.Controllers
             }
             return NotFound("No movies found");
         }
+        
+        [HttpGet]
+        [Route("Details")]
+        public async Task<IActionResult> Details(int id)
+        {
+            var movieDetails = await _movieService.GetMovieDetailsById(id);
 
+            if (movieDetails == null)
+            {
+                return NotFound("No movie details found.");
+            }
+
+            return Ok(movieDetails);
+        }
+
+        [HttpGet]
+        [Route("Genre")]
+        public async Task<IActionResult> Genre(int id)
+        {
+            var moviecards = await _genreService.GetMoviesByGenreId(id);
+
+            if (moviecards == null)
+            {
+                return NotFound("No movies found for Genre");
+            }
+
+            return Ok(moviecards);
+        }
     }
 }
