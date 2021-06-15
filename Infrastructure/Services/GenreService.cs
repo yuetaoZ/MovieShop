@@ -20,7 +20,7 @@ namespace Infrastructure.Services
 
         public async Task<List<GenreResponseModel>> GetAllGenres()
         {
-            var genres = await _genreRepository.ListAll();
+            var genres = await _genreRepository.ListAllAsync();
 
             var genresModel = new List<GenreResponseModel>();
             foreach (var genre in genres)
@@ -34,10 +34,9 @@ namespace Infrastructure.Services
 
             return genresModel;
         }
-
         public async Task<List<MovieCardResponseModel>> GetMoviesByGenreId(int Id)
         {
-            var genre = await _genreRepository.GetById(Id);
+            var genre = await _genreRepository.GetByIdAsync(Id);
 
             if (genre == null)
             {

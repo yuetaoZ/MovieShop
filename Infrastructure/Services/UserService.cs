@@ -47,7 +47,7 @@ namespace Infrastructure.Services
                 HashedPassword = hashedPassword
             };
 
-            var createdUser = await _userRepository.Add(user);
+            var createdUser = await _userRepository.AddAsync(user);
 
             // convert the returned user entity to UserRegisterResponseModel
 
@@ -94,7 +94,7 @@ namespace Infrastructure.Services
         }
         public async Task<List<MovieCardResponseModel>> GetUserPurchasedMovies(int id)
         {
-            var user = await _userRepository.GetById(id);
+            var user = await _userRepository.GetByIdAsync(id);
 
             var purchedMovieCardList = new List<MovieCardResponseModel>();
             foreach (var usermovie in user.Purchases)
@@ -134,7 +134,7 @@ namespace Infrastructure.Services
         public async Task<UserProfileResponseModel> GetUserProfile(int userId)
         {
 
-            var user = await _userRepository.GetById(userId);
+            var user = await _userRepository.GetByIdAsync(userId);
             var userProfile = new UserProfileResponseModel
             {
                 Id = user.Id,
@@ -155,7 +155,7 @@ namespace Infrastructure.Services
 
         public async Task<List<MovieCardResponseModel>> GetUserFavoriteMovies(int userId)
         {
-            var user = await _userRepository.GetById(userId);
+            var user = await _userRepository.GetByIdAsync(userId);
 
             var favoriteMovieCardList = new List<MovieCardResponseModel>();
             foreach (var usermovie in user.Favorites)
@@ -174,7 +174,7 @@ namespace Infrastructure.Services
 
         public async Task<UserProfileResponseModel> EditUserProfile(UserProfileResponseModel userProfileResponseModel)
         {        
-            var user = await _userRepository.GetById(userProfileResponseModel.Id);
+            var user = await _userRepository.GetByIdAsync(userProfileResponseModel.Id);
 
             if (user == null)
             {
@@ -189,7 +189,7 @@ namespace Infrastructure.Services
             user.PhoneNumber = userProfileResponseModel.PhoneNumber;
             user.LastLoginDateTime = userProfileResponseModel.LastLoginDateTime;
 
-            await _userRepository.Update(user);
+            await _userRepository.UpdateAsync(user);
 
             var response = new UserProfileResponseModel
             {
@@ -202,6 +202,91 @@ namespace Infrastructure.Services
             };
 
             return response;
+        }
+
+        public Task<UserLoginResponseModel> validateUser(string email, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<UserRegisterResponseModel> GetUserDetails(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> GetUser(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Uri> UploadUserProfilePicture(UserProfileRequestModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddFavorite(FavoriteRequestModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveFavorite(FavoriteRequestModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> FavoriteExists(int id, int movieId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<FavoriteResponseModel> GetAllFavoritesForUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PurchaseMovie(PurchaseRequestModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> IsMoviePurchased(PurchaseRequestModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PurchaseResponseModel> GetAllPurchasesForUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddMovieReview(ReviewRequestModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateMovieReview(ReviewRequestModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteMovieReview(int userId, int movieId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ReviewResponseModel> GetAllReviewsByUserId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<MovieCardResponseModel>> GetUserPurchasedMovies(int? userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<UserProfileResponseModel> GetUserProfile(int? userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

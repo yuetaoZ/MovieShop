@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories
         {
         }
 
-        public override async Task<Genre> GetById(int Id)
+        public override async Task<Genre> GetByIdAsync(int Id)
         {
             var genre = await _dbContext.Genres
                 .Include(g => g.MovieGenres)

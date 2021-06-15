@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Models.Response
 {
-    public class CastResponseModel
+    public class CastCardResponseModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

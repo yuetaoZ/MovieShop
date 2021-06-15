@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models.Response;
+﻿using ApplicationCore.Models.Request;
+using ApplicationCore.Models.Response;
 using ApplicationCore.RepositoryInterfaces;
 using ApplicationCore.ServiceInterfaces;
 using System.Collections.Generic;
@@ -54,7 +55,7 @@ namespace Infrastructure.Services
 
         public async Task<MovieDetailsResponseModel> GetMovieDetailsById(int id)
         {
-            var movie = await _movieRepository.GetById(id);
+            var movie = await _movieRepository.GetByIdAsync(id);
 
             if (movie == null)
             {
@@ -80,11 +81,11 @@ namespace Infrastructure.Services
             };
 
             movieDetails.Genres = new List<GenreResponseModel>();
-            movieDetails.Casts = new List<CastResponseModel>();
+            movieDetails.Casts = new List<CastCardResponseModel>();
 
             foreach (var moviecast in movie.MovieCasts)
             {
-                movieDetails.Casts.Add(new CastResponseModel { 
+                movieDetails.Casts.Add(new CastCardResponseModel { 
                     Id = moviecast.CastId, 
                     Name = moviecast.Cast.Name, 
                     ProfilePath = moviecast.Cast.ProfilePath, 
@@ -100,6 +101,26 @@ namespace Infrastructure.Services
             }
 
             return movieDetails;
+        }
+
+        public Task<IEnumerable<MovieReviewResponseModel>> GetReviesByMovieId(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<IEnumerable<MovieCardResponseModel>> GetTopRatedMovies()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<MovieDetailsResponseModel> CreateMovie(MovieCreateRequest model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<MovieDetailsResponseModel> UpdateMovie(MovieCreateRequest model)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

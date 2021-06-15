@@ -92,9 +92,11 @@ namespace Infrastructure.Data
         {
             builder.ToTable("Purchase");
             builder.HasKey(p => p.Id);
-            builder.Property(p => p.PurchaseNumber).HasColumnType("UniqueIdentifier");
+            builder.Property(p => p.Id).ValueGeneratedOnAdd();
+            builder.Property(p => p.PurchaseNumber).HasColumnType("UniqueIdentifier").ValueGeneratedOnAdd();
             builder.Property(p => p.TotalPrice).HasColumnType("decimal(18, 2)");
             builder.Property(p => p.PurchaseDateTime).HasColumnType("datetime2(7)");
+            builder.HasIndex(p => new { p.UserId, p.MovieId }).IsUnique();
         }
 
         private void ConfigureReview(EntityTypeBuilder<Review> builder)
@@ -115,6 +117,7 @@ namespace Infrastructure.Data
             builder.Property(u => u.HashedPassword).HasMaxLength(1024);
             builder.Property(u => u.Salt).HasMaxLength(1024);
             builder.Property(u => u.PhoneNumber).HasMaxLength(16);
+            builder.Property(u => u.IsLocked).HasDefaultValue(false);
             builder.Property(u => u.LockoutEndDate).HasColumnType("datetime2(7)");
             builder.Property(u => u.LastLoginDateTime).HasColumnType("datetime2(7)");
         }
@@ -155,7 +158,9 @@ namespace Infrastructure.Data
             builder.ToTable("Movie");
             builder.HasKey(m => m.Id);
             builder.Property(m => m.Title).HasMaxLength(256);
+            builder.Property(m => m.Overview).HasMaxLength(4096);
             builder.Property(m => m.Tagline).HasMaxLength(512);
+            builder.Property(m => m.ImdbUrl).HasMaxLength(2084);
             builder.Property(m => m.TmdbUrl).HasMaxLength(2084);
             builder.Property(m => m.PosterUrl).HasMaxLength(2084);
             builder.Property(m => m.BackdropUrl).HasMaxLength(2084);
