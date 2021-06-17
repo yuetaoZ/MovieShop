@@ -70,7 +70,7 @@ namespace MovieShop.API.Controllers
         [Route("ViewProfile")]
         public async Task<IActionResult> ViewProfile()
         {
-            var userId = _currentUserService.UserId;
+            var userId = _currentUserService.UserId.GetValueOrDefault();
 
             var userProfile = await _userService.GetUserProfile(userId);
 
@@ -87,7 +87,7 @@ namespace MovieShop.API.Controllers
         [Route("EditProfile")]
         public async Task<IActionResult> EditProfile()
         {
-            var userId = _currentUserService.UserId;
+            var userId = _currentUserService.UserId.GetValueOrDefault();
             var userProfile = await _userService.GetUserProfile(userId);
 
             if (userProfile != null)
@@ -103,6 +103,11 @@ namespace MovieShop.API.Controllers
         [Route("EditProfile")]
         public async Task<IActionResult> EditProfile([FromBody] UserProfileResponseModel model)
         {
+            var userId = _currentUserService.UserId.GetValueOrDefault();
+            if (userId != model.Id)
+            {
+                return Unauthorized("please send correct id");
+            }
             if (ModelState.IsValid)
             {
                 await _userService.EditUserProfile(model);

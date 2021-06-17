@@ -28,7 +28,7 @@ namespace ApplicationCore.ServiceInterfaces
         Task<UserProfileResponseModel> EditUserProfile(UserProfileResponseModel userProfileResponseModel);
         Task<List<MovieCardResponseModel>> GetUserPurchasedMovies(int userId);
         Task<List<MovieCardResponseModel>> GetUserFavoriteMovies(int userId);
-        Task<UserProfileResponseModel> GetUserProfile(int? userId);
+        Task<UserProfileResponseModel> GetUserProfile(int userId);
         Task AddMovieReview(ReviewRequestModel model);
         Task UpdateMovieReview(ReviewRequestModel model);
         Task DeleteMovieReview(int userId, int movieId);
