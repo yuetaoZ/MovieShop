@@ -22,25 +22,31 @@ namespace MovieShop.API.Controllers
         public UserController(ICurrentUserService currentUserService, IUserService userService)
         {
             _currentUserService = currentUserService;
-            _userService = userService; 
+            _userService = userService;
         }
 
 
         [Authorize]
         [HttpGet]
-        [Route("PurchasedMovies")]
-        public async Task<IActionResult> GetAllPurchasedMovies()
+        [Route("{id:int}/purchases")]
+        public async Task<IActionResult> GetUserPurchasedMovies(int id)
         {
-            var userId = _currentUserService.UserId;
-
-            var purchasedMovies = await _userService.GetUserPurchasedMovies(userId);
-            
-            if (purchasedMovies.Any())
+            if (_currentUserService.UserId != id)
             {
-                return Ok(purchasedMovies);
+                return Unauthorized("please send correct id");
+            }
+            // get userid from token and compare with id that is passed in the URL, then if they equal call the service
+            // get all movies purchased by user id
+            // we need to check if the client who is calling this method is send a valid jwt
+
+            var purchasedMovies = await _userService.GetUserPurchasedMovies(id);
+
+            if (purchasedMovies == null)
+            {
+                return BadRequest("No purchased movies found.");
             }
 
-            return BadRequest("No movies found");
+            return Ok(purchasedMovies);
         }
 
         [Authorize]

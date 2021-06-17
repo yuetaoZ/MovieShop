@@ -304,11 +304,6 @@ namespace Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<MovieCardResponseModel>> GetUserPurchasedMovies(int? userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<UserProfileResponseModel> GetUserProfile(int? userId)
         {
             throw new NotImplementedException();

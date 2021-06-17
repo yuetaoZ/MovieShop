@@ -26,7 +26,7 @@ namespace ApplicationCore.ServiceInterfaces
         Task<PurchaseResponseModel> GetAllPurchasesForUser(int id);
         Task<UserLoginResponseModel> Login(string email, string password);
         Task<UserProfileResponseModel> EditUserProfile(UserProfileResponseModel userProfileResponseModel);
-        Task<List<MovieCardResponseModel>> GetUserPurchasedMovies(int? userId);
+        Task<List<MovieCardResponseModel>> GetUserPurchasedMovies(int userId);
         Task<List<MovieCardResponseModel>> GetUserFavoriteMovies(int userId);
         Task<UserProfileResponseModel> GetUserProfile(int? userId);
         Task AddMovieReview(ReviewRequestModel model);
