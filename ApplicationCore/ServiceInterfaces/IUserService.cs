@@ -20,10 +20,8 @@ namespace ApplicationCore.ServiceInterfaces
         Task AddFavorite(FavoriteRequestModel model);
         Task RemoveFavorite(FavoriteRequestModel model);
         Task<bool> FavoriteExists(int id, int movieId);
-        Task<FavoriteResponseModel> GetAllFavoritesForUser(int id);
         Task PurchaseMovie(PurchaseRequestModel model);
         Task<bool> IsMoviePurchased(PurchaseRequestModel model);
-        Task<PurchaseResponseModel> GetAllPurchasesForUser(int id);
         Task<UserLoginResponseModel> Login(string email, string password);
         Task<UserProfileResponseModel> EditUserProfile(UserProfileResponseModel userProfileResponseModel);
         Task<List<MovieCardResponseModel>> GetUserPurchasedMovies(int userId);

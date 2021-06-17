@@ -108,6 +108,7 @@ namespace MovieShop.API.Controllers
             {
                 return Unauthorized("please send correct id");
             }
+
             if (ModelState.IsValid)
             {
                 await _userService.EditUserProfile(model);
@@ -115,6 +116,63 @@ namespace MovieShop.API.Controllers
             }
 
             return BadRequest("Please check input");
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("{id:int}/favorites")]
+        public async Task<IActionResult> GetUserFavoriteMovies(int id)
+        {
+            if (_currentUserService.UserId != id)
+            {
+                return Unauthorized("please send correct id");
+            }
+            // get userid from token and compare with id that is passed in the URL, then if they equal call the service
+            // get all movies purchased by user id
+            // we need to check if the client who is calling this method is send a valid jwt
+
+            var favoriteMovies = await _userService.GetUserFavoriteMovies(id);
+
+            if (favoriteMovies == null)
+            {
+                return BadRequest("No favorite movies found.");
+            }
+
+            return Ok(favoriteMovies);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("addfavorite/{id:int}")]
+        public async Task<IActionResult> AddFavoriteMovie(int id)
+        {
+            var userId = _currentUserService.UserId.GetValueOrDefault();
+            var favoriteRequest = new FavoriteRequestModel()
+            {
+                UserId = userId,
+                MovieId = id
+            };
+
+            await _userService.AddFavorite(favoriteRequest);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("removefavorite/{id:int}")]
+        public async Task<IActionResult> RemoveFavoriteMovie(int id)
+        {
+            var userId = _currentUserService.UserId.GetValueOrDefault();
+            var favoriteRequest = new FavoriteRequestModel()
+            {
+                UserId = userId,
+                MovieId = id
+            };
+
+
+            await _userService.RemoveFavorite(favoriteRequest);
+            return Ok();
         }
     }
 }

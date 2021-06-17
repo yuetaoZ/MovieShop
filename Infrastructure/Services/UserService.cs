@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -19,12 +20,14 @@ namespace Infrastructure.Services
         private readonly ICurrentUserService _currentUserService;
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly IMovieService _movieService;
-        public UserService(IUserRepository userRepository, ICurrentUserService currentUserService, IPurchaseRepository purchaseRepository, IMovieService movieService)
+        private readonly IAsyncRepository<Favorite> _favoriteRepository;
+        public UserService(IUserRepository userRepository, ICurrentUserService currentUserService, IPurchaseRepository purchaseRepository, IMovieService movieService, IAsyncRepository<Favorite> favoriteRepository)
         {
             _userRepository = userRepository;
             _currentUserService = currentUserService;
             _purchaseRepository = purchaseRepository;
             _movieService = movieService;
+            _favoriteRepository = favoriteRepository;
         }
 
         public async Task<UserRegisterResponseModel> RegisterUser(UserRegisterRequestModel userRegisterRequestModel)
@@ -232,24 +235,37 @@ namespace Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public Task AddFavorite(FavoriteRequestModel model)
+        public async Task AddFavorite(FavoriteRequestModel favoriteRequestModel)
         {
-            throw new NotImplementedException();
+            if (_currentUserService.UserId != favoriteRequestModel.UserId)
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to add favorite.");
+            if (await FavoriteExists(favoriteRequestModel.UserId, favoriteRequestModel.MovieId))
+                throw new ConflictException("Movie already favorited");
+
+            var favorite = new Favorite()
+            {
+                MovieId = favoriteRequestModel.MovieId,
+                UserId = favoriteRequestModel.UserId
+            };
+
+            await _favoriteRepository.AddAsync(favorite);
         }
 
-        public Task RemoveFavorite(FavoriteRequestModel model)
+        public async Task RemoveFavorite(FavoriteRequestModel favoriteRequestModel)
         {
-            throw new NotImplementedException();
+            if (_currentUserService.UserId != favoriteRequestModel.UserId)
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to remove favorite.");
+            if (!await FavoriteExists(favoriteRequestModel.UserId, favoriteRequestModel.MovieId))
+                throw new NotFoundException("Movie not found", favoriteRequestModel.MovieId);
+
+            var dbFavorite = await _favoriteRepository.ListAsync(f => f.MovieId == favoriteRequestModel.MovieId && 
+                                                                      f.UserId == favoriteRequestModel.UserId);
+            await _favoriteRepository.DeleteAsync(dbFavorite.First());
         }
 
-        public Task<bool> FavoriteExists(int id, int movieId)
+        public async Task<bool> FavoriteExists(int id, int movieId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<FavoriteResponseModel> GetAllFavoritesForUser(int id)
-        {
-            throw new NotImplementedException();
+            return await _favoriteRepository.GetExistsAsync(f => f.UserId == id && f.MovieId == movieId);
         }
 
         public async Task PurchaseMovie(PurchaseRequestModel purchaseRequest)
@@ -277,11 +293,6 @@ namespace Infrastructure.Services
         {
             return await _purchaseRepository.GetExistsAsync(p => p.UserId == purchaseRequest.UserId
             && p.MovieId == purchaseRequest.MovieId);
-        }
-
-        public Task<PurchaseResponseModel> GetAllPurchasesForUser(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public Task AddMovieReview(ReviewRequestModel model)
