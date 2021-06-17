@@ -103,14 +103,44 @@ namespace Infrastructure.Services
             return movieDetails;
         }
 
-        public Task<IEnumerable<MovieReviewResponseModel>> GetReviesByMovieId(int id)
+        public async Task<IEnumerable<MovieReviewResponseModel>> GetReviesByMovieId(int id)
         {
-            throw new System.NotImplementedException();
+            var reviews = await _movieRepository.GetMovieReviews(id);
+
+            var response = new List<MovieReviewResponseModel>();
+
+            foreach (var review in reviews)
+            {
+                response.Add(new MovieReviewResponseModel
+                {
+                    UserId = review.UserId,
+                    MovieId = review.MovieId,
+                    ReviewText = review.ReviewText,
+                    Rating = review.Rating
+                }); 
+            }
+
+            return response;
         }
 
-        public Task<IEnumerable<MovieCardResponseModel>> GetTopRatedMovies()
+        public async Task<IEnumerable<MovieCardResponseModel>> GetTopRatedMovies()
         {
-            throw new System.NotImplementedException();
+            var movies = await _movieRepository.GetTopRatedMovies();
+
+            var response = new List<MovieCardResponseModel>();
+
+            foreach (var movie in movies)
+            {
+                response.Add(new MovieCardResponseModel
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    PosterUrl = movie.PosterUrl,
+                    ReleaseDate = movie.ReleaseDate.GetValueOrDefault()
+                });
+            }
+
+            return response;
         }
 
         public Task<MovieDetailsResponseModel> CreateMovie(MovieCreateRequest model)

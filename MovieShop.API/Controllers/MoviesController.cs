@@ -62,5 +62,33 @@ namespace MovieShop.API.Controllers
 
             return Ok(moviecards);
         }
+
+        [HttpGet]
+        [Route("Reviews")]
+        public async Task<IActionResult> Reviews(int id)
+        {
+            var reviews = await _movieService.GetReviesByMovieId(id);
+
+            if (reviews == null)
+            {
+                return NotFound("No reviews found for movie.");
+            }
+
+            return Ok(reviews);
+        }
+
+        [HttpGet]
+        [Route("TopRated")]
+        public async Task<IActionResult> Toprated()
+        {
+            var movies = await _movieService.GetTopRatedMovies();
+
+            if (movies == null)
+            {
+                return NotFound("No movies found.");
+            }
+
+            return Ok(movies);
+        }
     }
 }

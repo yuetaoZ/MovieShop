@@ -27,7 +27,8 @@ namespace MovieShop.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> TopRatedMovies()
         {
-            return View();
+            var response = await _movieService.GetTopRatedMovies();
+            return View(response);
         }
 
         [HttpGet]
@@ -35,6 +36,13 @@ namespace MovieShop.MVC.Controllers
         {
             var moviecards = await _genreService.GetMoviesByGenreId(id);
             return View(moviecards);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Reviews(int id)
+        {
+            var reviews = await _movieService.GetReviesByMovieId(id);
+            return View(reviews);
         }
     }
 }
