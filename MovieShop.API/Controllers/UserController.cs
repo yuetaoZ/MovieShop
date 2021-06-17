@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models.Response;
+﻿using ApplicationCore.Models.Request;
+using ApplicationCore.Models.Response;
 using ApplicationCore.ServiceInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,7 +29,7 @@ namespace MovieShop.API.Controllers
         [Authorize]
         [HttpGet]
         [Route("PurchasedMovies")]
-        public async Task<IActionResult> PurchasedMovies()
+        public async Task<IActionResult> GetAllPurchasedMovies()
         {
             var userId = _currentUserService.UserId;
 
@@ -40,6 +41,22 @@ namespace MovieShop.API.Controllers
             }
 
             return BadRequest("No movies found");
+        }
+
+        [Authorize]
+        [HttpPost("purchase")]
+        public async Task<ActionResult> PurchaseMovie(int id)
+        {
+            var userId = _currentUserService.UserId.GetValueOrDefault();
+            var purchaseRequest = new PurchaseRequestModel()
+            {
+                UserId = userId,
+                MovieId = id
+            };
+
+            await _userService.PurchaseMovie(purchaseRequest);
+
+            return Ok();
         }
 
         [Authorize]

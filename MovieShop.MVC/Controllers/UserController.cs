@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models.Response;
+﻿using ApplicationCore.Models.Request;
+using ApplicationCore.Models.Response;
 using ApplicationCore.ServiceInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,9 +39,18 @@ namespace MovieShop.MVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> PurchaseMovie()
+        public async Task<IActionResult> PurchaseMovie(int id)
         {
             // get userid from CurrentUser and create a row in Purchase Table
+            var userId = _currentUserService.UserId.GetValueOrDefault();
+            var purchaseRequest = new PurchaseRequestModel()
+            {
+                UserId = userId,
+                MovieId = id
+            };
+
+            await _userService.PurchaseMovie(purchaseRequest);
+
             return View();
         }
 

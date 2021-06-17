@@ -44,6 +44,7 @@ namespace MovieShop.MVC
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 
             services.AddDbContext<MovieShopDbContext>(options =>
             {

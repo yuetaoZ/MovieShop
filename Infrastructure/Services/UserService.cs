@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using ApplicationCore.Entities;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Models.Request;
 using ApplicationCore.Models.Response;
 using ApplicationCore.RepositoryInterfaces;
@@ -14,11 +16,17 @@ namespace Infrastructure.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-
-        public UserService(IUserRepository userRepository)
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IPurchaseRepository _purchaseRepository;
+        private readonly IMovieService _movieService;
+        public UserService(IUserRepository userRepository, ICurrentUserService currentUserService, IPurchaseRepository purchaseRepository, IMovieService movieService)
         {
             _userRepository = userRepository;
+            _currentUserService = currentUserService;
+            _purchaseRepository = purchaseRepository;
+            _movieService = movieService;
         }
+
         public async Task<UserRegisterResponseModel> RegisterUser(UserRegisterRequestModel userRegisterRequestModel)
         {
             // first we need to check the email does not exists in our database
@@ -244,14 +252,31 @@ namespace Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public Task PurchaseMovie(PurchaseRequestModel model)
+        public async Task PurchaseMovie(PurchaseRequestModel purchaseRequest)
         {
-            throw new NotImplementedException();
+            if (_currentUserService.UserId != purchaseRequest.UserId)
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to purchase");
+            if (await IsMoviePurchased(purchaseRequest))
+                throw new ConflictException("Movie already Purchase");
+
+            var movieDetail = await _movieService.GetMovieDetailsById(purchaseRequest.MovieId);
+            purchaseRequest.TotalPrice = movieDetail.Price;
+
+            var purchase = new Purchase()
+            {
+                UserId = purchaseRequest.UserId,
+                TotalPrice = movieDetail.Price.GetValueOrDefault(),
+                PurchaseDateTime = purchaseRequest.PurchaseDateTime.GetValueOrDefault(),
+                PurchaseNumber = purchaseRequest.PurchaseNumber.GetValueOrDefault(),
+                MovieId = purchaseRequest.MovieId
+            };
+            await _purchaseRepository.AddAsync(purchase);
         }
 
-        public Task<bool> IsMoviePurchased(PurchaseRequestModel model)
+        public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest)
         {
-            throw new NotImplementedException();
+            return await _purchaseRepository.GetExistsAsync(p => p.UserId == purchaseRequest.UserId
+            && p.MovieId == purchaseRequest.MovieId);
         }
 
         public Task<PurchaseResponseModel> GetAllPurchasesForUser(int id)

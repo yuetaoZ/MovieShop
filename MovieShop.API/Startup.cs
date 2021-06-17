@@ -44,6 +44,7 @@ namespace MovieShop.API
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IPurchaseRepository, PurchaseRepository>();
             services.AddHttpContextAccessor();
 
             services.AddSwaggerGen(c =>
