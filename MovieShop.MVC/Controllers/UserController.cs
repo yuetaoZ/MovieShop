@@ -26,7 +26,7 @@ namespace MovieShop.MVC.Controllers
         public async Task<IActionResult> PurchasedMovies()
         {
 
-            var userId = _currentUserService.UserId;
+            var userId = _currentUserService.UserId.GetValueOrDefault();
             // get the user id
             //
             // make a request to the database and get info from purchase table 
@@ -58,7 +58,7 @@ namespace MovieShop.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewProfile()
         {
-            var userId = _currentUserService.UserId;
+            var userId = _currentUserService.UserId.GetValueOrDefault();
             var userProfile = await _userService.GetUserProfile(userId);
 
             return View(userProfile);
@@ -68,7 +68,7 @@ namespace MovieShop.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> EditProfile()
         {
-            var userId = _currentUserService.UserId;
+            var userId = _currentUserService.UserId.GetValueOrDefault();
             var userProfile = await _userService.GetUserProfile(userId);
 
             return View(userProfile);
